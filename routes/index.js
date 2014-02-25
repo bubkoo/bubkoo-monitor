@@ -22,6 +22,13 @@ module.exports = function (app) {
     });
 
     app.get('/m.gif', function (req, res) {
-        res.send("data: ");
+        var data = req.query.d;
+        res.sendfile('blank.gif', {root: 'public/images/'}, function (err) {
+            if (data) {
+                console.log(data);
+                // TODO:解析 json 数据并存数据库
+                console.log('monitor data Saved.');
+            }
+        });
     });
 };
