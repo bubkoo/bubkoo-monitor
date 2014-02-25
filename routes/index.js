@@ -1,5 +1,3 @@
-
-
 module.exports = function (app) {
 
     var hook = require('./githubhook');
@@ -21,5 +19,9 @@ module.exports = function (app) {
     // 测试用，请删除 get 路由
     app.get('/deploy', function (req, res) {
         res.send("[get] is not allowed. Just for testing.");
+    });
+
+    app.get('/m.gif', function (req, res) {
+        res.send("data: ");
     });
 };
