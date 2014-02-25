@@ -5,8 +5,6 @@
 
 var express = require('express');
 var routes = require('./routes');
-var user = require('./routes/user');
-var hook = require('./routes/githubhook')
 var http = require('http');
 var path = require('path');
 
@@ -16,12 +14,10 @@ var app = express();
 app.set('port', process.env.PORT || 3030);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
-app.use(express.favicon());
-// app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
+app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
 
 // connect 内建的中间件，在开发环境下使用，在终端显示简单的日志
-// 假如你去掉这一行代码，不管你怎么刷新网页，终端都只有一行 Express server listening on port 3000
+// 假如你去掉这一行代码，不管你怎么刷新网页，终端都只有一行 Express server listening on port 3030
 app.use(express.logger('dev'));
 
 // connect 内建的中间件，用来解析请求体，支持 application/json， application/x-www-form-urlencoded, 和 multipart/form-data
@@ -45,12 +41,8 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.get('/users', user.list);
-app.post('/deploy', hook.githubhook);
-
-// 请删除 get 路由
-app.get('/deploy', hook.githubhook);
+// 全局路由控制，./routes/index.js
+routes(app);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
